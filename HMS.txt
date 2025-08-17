@@ -1,0 +1,248 @@
+=================== 1. Registration Tables =====================
+User Management
+
+Roles (RoleID, RoleName)
+   |
+   v
+Users (UserID, Username, PasswordHash, RoleID, CreatedAt)
+   |
+   v
+UserLogs (LogID, UserID, Activity, LogTime)
+
+Patient Management
+
+Patients (PatientID, FirstName, LastName, DateOfBirth, Gender, ContactNumber, Email, Address, CreatedAt)
+   |
+   v
+EmergencyContacts (ContactID, PatientID, FullName, Relationship, ContactNumber)
+   |
+   v
+PatientAllergies (AllergyID, PatientID, AllergyName)
+
+
+Doctor & Staff Management
+
+
+Doctors (DoctorID, FirstName, LastName, Specialization, ContactNumber, Email, DepartmentID)
+   |
+Nurses (NurseID, FirstName, LastName, ContactNumber, Email, DepartmentID)
+   |
+Staff (StaffID, FirstName, LastName, ContactNumber, Email, DepartmentID)
+   |
+Shifts (ShiftID, ShiftName, StartTime, EndTime)
+   |
+Schedules (ScheduleID, DoctorID, NurseID, StaffID, ShiftID, ScheduleDate)
+
+
+Hospital Departments & Rooms
+
+Departments (DepartmentID, DepartmentName)
+   |
+   v
+Rooms (RoomID, RoomNumber, DepartmentID, RoomType)
+   |
+   v
+Beds (BedID, RoomID, BedNumber, Status)
+
+======================== 2. Transaction Tables =========================
+
+Patient Management
+
+Appointments (AppointmentID, PatientID, DoctorID, AppointmentDate, Status)
+   |
+   v
+PatientVisits (VisitID, PatientID, DoctorID, VisitDate, Diagnosis)
+   |
+   v
+MedicalRecords (RecordID, PatientID, VisitID, Diagnosis, Treatment)
+
+Pharmacy & Laboratory
+
+Medicines (MedicineID, MedicineName, Manufacturer, Price)
+   |
+   v
+Prescriptions (PrescriptionID, PatientID, DoctorID, MedicineID, Dosage, Duration)
+   |
+LabTests (TestID, TestName, Cost)
+   |
+   v
+LabResults (ResultID, PatientID, TestID, ResultDate, Result)
+
+
+Billing & Finance
+
+
+Billing (BillID, PatientID, TotalAmount, BillingDate, Status)
+   |
+   v
+Payments (PaymentID, BillID, AmountPaid, PaymentDate)
+
+============================= 3. Report Tables =========================
+
+Reports & Notifications
+
+Reports (ReportID, ReportType, GeneratedBy, GeneratedOn, Content)
+   |
+Notifications (NotificationID, UserID, Message, SentOn)
+   |
+SystemLogs (LogID, Activity, LogTime)
+   |
+AuditLogs (AuditID, UserID, Action, Timestamp)
+
+=====================================================================================
+
+AuditLogs (AuditID, UserID, Action, Timestamp)
+Relationships Between Tables
+Patients are linked to Appointments, PatientVisits, MedicalRecords, EmergencyContacts, and PatientAllergies.
+
+Doctors, Nurses, and Staff are linked to Schedules and Shifts.
+
+Departments are linked to Rooms, Beds, Doctors, Nurses, and Staff.
+
+Medicines are linked to Prescriptions.
+
+LabTests are linked to LabResults.
+
+Billing is linked to Payments and Patients.
+
+==================================================================================
+
+User Management
+Roles → Users: One-to-Many
+(One role can be assigned to many users.)
+
+Users → UserLogs: One-to-Many
+(One user can have many log entries.)
+
+2. Patient Management
+Patients → EmergencyContacts: One-to-Many
+(One patient can have multiple emergency contacts.)
+
+Patients → PatientAllergies: One-to-Many
+(One patient can have multiple allergies.)
+
+Patients → Appointments: One-to-Many
+(One patient can have multiple appointments.)
+
+Patients → PatientVisits: One-to-Many
+(One patient can have multiple visits.)
+
+Patients → MedicalRecords: One-to-Many
+(One patient can have multiple medical records.)
+
+Patients → Billing: One-to-Many
+(One patient can have multiple bills.)
+
+3. Doctor & Staff Management
+Doctors → Appointments: One-to-Many
+(One doctor can have multiple appointments.)
+
+Doctors → PatientVisits: One-to-Many
+(One doctor can handle multiple patient visits.)
+
+Doctors → Prescriptions: One-to-Many
+(One doctor can write multiple prescriptions.)
+
+Doctors → Schedules: One-to-Many
+(One doctor can have multiple schedules.)
+
+Nurses → Schedules: One-to-Many
+(One nurse can have multiple schedules.)
+
+Staff → Schedules: One-to-Many
+(One staff member can have multiple schedules.)
+
+Shifts → Schedules: One-to-Many
+(One shift can be assigned to multiple schedules.)
+
+4. Hospital Departments & Rooms
+Departments → Rooms: One-to-Many
+(One department can have multiple rooms.)
+
+Rooms → Beds: One-to-Many
+(One room can have multiple beds.)
+
+Departments → Doctors: One-to-Many
+(One department can have multiple doctors.)
+
+Departments → Nurses: One-to-Many
+(One department can have multiple nurses.)
+
+Departments → Staff: One-to-Many
+(One department can have multiple staff members.)
+
+5. Pharmacy & Laboratory
+Medicines → Prescriptions: One-to-Many
+(One medicine can be prescribed in multiple prescriptions.)
+
+LabTests → LabResults: One-to-Many
+(One lab test can have multiple results for different patients.)
+
+6. Billing & Finance
+Billing → Payments: One-to-Many
+(One bill can have multiple payments.)
+
+Patients → Billing: One-to-Many
+(One patient can have multiple bills.)
+
+7. Emergency & Ambulance
+Patients → EmergencyCases: One-to-Many
+(One patient can have multiple emergency cases.)
+
+Ambulances → AmbulanceRequests: One-to-Many
+(One ambulance can handle multiple requests.)
+
+8. Reports & Notifications
+Users → Notifications: One-to-Many
+(One user can receive multiple notifications.)
+
+Users → SystemLogs: One-to-Many
+(One user can generate multiple system logs.)
+
+Users → AuditLogs: One-to-Many
+(One user can have multiple audit log entries.)
+
+9. Surgery & Treatment
+Patients → Surgeries: One-to-Many
+(One patient can undergo multiple surgeries.)
+
+Patients → TreatmentPlans: One-to-Many
+(One patient can have multiple treatment plans.)
+
+Patients → RecoveryPlans: One-to-Many
+(One patient can have multiple recovery plans.)
+
+10. Visitor & Security Management
+Visitors → SecurityLogs: One-to-Many
+(One visitor can have multiple security log entries.)
+
+AccessControl → SecurityLogs: One-to-Many
+(One access control entry can generate multiple security logs.)
+
+11. Feedback & Support
+Patients → Feedback: One-to-Many
+(One patient can submit multiple feedback entries.)
+
+Patients → Complaints: One-to-Many
+(One patient can file multiple complaints.)
+
+Users → SupportTickets: One-to-Many
+(One user can raise multiple support tickets.)
+
+12. Additional Table (Chalide)
+Chalide: This table can be linked to any other table as needed, depending on its purpose. For example:
+
+If it stores patient-related data: Patients → Chalide: One-to-Many.
+
+If it stores doctor-related data: Doctors → Chalide: One-to-Many.
+
+Summary of Relationships
+One-to-Many is the most common relationship in this database.
+
+Many-to-Many relationships (e.g., between Doctors and Shifts) are handled using junction tables like Schedules.
+
+One-to-One relationships are rare but can be implemented if needed (e.g., linking a patient to a unique medical record).
+
+This structure ensures data integrity, avoids redundancy, and supports efficient querying for the Hospital Management System.
+
+New chat
